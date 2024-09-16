@@ -19,12 +19,14 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float axisX = Input.GetAxisRaw("Horizontal")* _speed * Time.deltaTime;
+        // calculate movement amount
+        float axisX = Input.GetAxisRaw("Horizontal") * _speed * Time.deltaTime;
         float axisY = Input.GetAxisRaw("Vertical") * _speed * Time.deltaTime;
+        transform.position += new Vector3(axisX, axisY, 0);
+        //apply movement amount to transform
 
-        transform.position +=new Vector3(axisX, axisY, 0);
-
-        if(transform.position.x > _horizontalBoundry.max)
+        // for boundry
+        if (transform.position.x > _horizontalBoundry.max)
         {
             transform.position = new Vector3(_horizontalBoundry.min, transform.position.y, 0);
 
@@ -33,6 +35,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             transform.position = new Vector3(_horizontalBoundry.max, transform.position.y, 0);
         }
+        //player passes the boundry, stop it on the edge 
         if (transform.position.y > _verticalBoundry.max)
         {
             transform.position = new Vector3(transform.position.x, _verticalBoundry.max, 0);
