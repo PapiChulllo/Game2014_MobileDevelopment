@@ -11,7 +11,7 @@ public class ScrollingBackground : MonoBehaviour
     private Boundry _boundry;
 
     [SerializeField]
-    private Vector3 _spawnpoint;
+    private Vector3 _spawnPosition;
 
     private Vector3 _direction = Vector3.down;
     // Start is called before the first frame update
@@ -27,7 +27,7 @@ public class ScrollingBackground : MonoBehaviour
 
         if (transform.position.y < _boundry.min)
         {
-            transform.position = _spawnpoint;
+            transform.position = _spawnPosition;
         }
         
     }

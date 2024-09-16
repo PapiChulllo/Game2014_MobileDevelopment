@@ -143,6 +143,10 @@ PrefabInstance:
       propertyPath: _spawnpoint.y
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4287184516419090230, guid: d55277b6dc57c4b4bbd74ffffc5dfcd6, type: 3}
+      propertyPath: _spawnPosition.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4852168140291637897, guid: d55277b6dc57c4b4bbd74ffffc5dfcd6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.8396927
@@ -383,8 +387,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0
-  _horizontalBoundry: {fileID: 0}
-  _verticalBoundry: {fileID: 0}
+  _horizontalBoundry:
+    min: 0
+    max: 0
+  _verticalBoundry:
+    min: 0
+    max: 0
 --- !u!1 &1753614870
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +444,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4287184516419090230, guid: d55277b6dc57c4b4bbd74ffffc5dfcd6, type: 3}
       propertyPath: _spawnpoint.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287184516419090230, guid: d55277b6dc57c4b4bbd74ffffc5dfcd6, type: 3}
+      propertyPath: _spawnPosition.y
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4852168140291637897, guid: d55277b6dc57c4b4bbd74ffffc5dfcd6, type: 3}
