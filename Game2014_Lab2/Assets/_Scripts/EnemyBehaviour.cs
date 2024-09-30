@@ -27,17 +27,20 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector2(transform.position.x+ _horizontalSpeed * Time.deltaTime, transform.position.y + _verticalSpeed * Time.deltaTime);
+        transform.position = new Vector2(Mathf.PingPong(_horizontalSpeed * Time.time, _horizontalBoundry.max - _horizontalBoundry.min) + _horizontalBoundry.min,
+ 
+                                  /* transform.position.x + _horizontalSpeed Time.deltaTime */
+                                  transform.position.y + _verticalSpeed *Time.deltaTime);
 
         if (transform.position.y < _verticalBoundry.min)
         {
             Reset();
         }
 
-        if (transform.position.x > _horizontalBoundry.max || transform.position.x < _horizontalBoundry.min)
-        {
-            _horizontalSpeed =- _horizontalSpeed;
-        }
+        //if (transform.position.x > _horizontalBoundry.max || transform.position.x < _horizontalBoundry.min)
+        //{
+        //    _horizontalSpeed = -_horizontalSpeed;
+        //}
     }
     private void Reset()
     {
