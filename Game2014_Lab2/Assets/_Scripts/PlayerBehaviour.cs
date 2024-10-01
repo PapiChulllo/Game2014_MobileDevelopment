@@ -15,11 +15,14 @@ public class PlayerBehaviour : MonoBehaviour
     Camera _camera;
     Vector2 _destination;
 
+    GameController _gameController;
+
     bool _isMobilePlatform = true;
     // Start is called before the first frame update
     void Start()
     {
         _camera = Camera.main;
+        _gameController = FindObjectOfType<GameController>();
 
         if (!_isTestMobile)
         {
@@ -97,6 +100,9 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("You crashed, well done ");
+        if(collision.CompareTag("Enemy"))
+        {
+            _gameController.ChangeScore(9);
+        }
     }
 }
