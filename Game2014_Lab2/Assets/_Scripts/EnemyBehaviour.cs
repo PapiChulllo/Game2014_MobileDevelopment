@@ -18,9 +18,14 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField]
     Boundry _horizontalBoundry;
 
+    SpriteRenderer _spriteRenderer;
+
+    Color[] _colors = {Color.green, Color.cyan, Color.white, Color.magenta, Color.yellow};
+
     // Start is called before the first frame update
     void Start()
     {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         Reset();
     }
 
@@ -42,9 +47,24 @@ public class EnemyBehaviour : MonoBehaviour
         //    _horizontalSpeed = -_horizontalSpeed;
         //}
     }
+    public IEnumerator DyingRoutine()
+    {
+
+        _spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(.2f);
+        _spriteRenderer.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+    }
+ 
     private void Reset()
     {
+
+        _spriteRenderer.color = _colors[Random.Range(0,_colors.Length)];
+        _spriteRenderer.enabled = true;
+        GetComponent<Collider2D>().enabled = true;
+        gameObject.SetActive(true);
         transform.position = new Vector2(Random.Range(_horizontalBoundry.min, _horizontalBoundry.max), _verticalBoundry.max);
+        transform.localScale = new Vector3(1 + Random.Range(-.3f, .3f), 1 + Random.Range(-.3f, .3f), 1f);
         _verticalSpeed = Random.Range(_verticalSpeedRange.min, _verticalSpeedRange.max);
         _horizontalSpeed = Random.Range(_horizontalSpeedRange.min, _horizontalSpeedRange.max);
     }
