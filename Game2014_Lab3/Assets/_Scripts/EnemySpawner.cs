@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
-    private GameObject enemyPrefab; // Assign your enemy prefab in the Inspector
+    private GameObject enemyPrefab; 
     [SerializeField]
     private float spawnInterval = 3f; // Time between each spawn
     [SerializeField]
@@ -20,7 +20,7 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(spawnRangeX.x, spawnRangeX.y), 10f, 0f); // Adjust spawn position based on your game world
+            Vector3 spawnPosition = new Vector3(Random.Range(spawnRangeX.x, spawnRangeX.y), 10f, 0f); 
             Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             yield return new WaitForSeconds(spawnInterval);
         }

@@ -27,8 +27,6 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
-        // Game over logic (e.g., display game over screen, stop player movement, etc.)
         Debug.Log("Game Over!");
-        // You can call RestartGame() here or show a "Game Over" screen
     }
 }

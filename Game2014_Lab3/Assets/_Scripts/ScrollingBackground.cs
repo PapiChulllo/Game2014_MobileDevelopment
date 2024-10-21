@@ -14,16 +14,14 @@ public class ScrollingBackground : MonoBehaviour
     private Vector3 _spawnPosition;
 
     private Vector3 _direction = Vector3.down;
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        transform.position += _direction * _speed * Time.deltaTime; // multiply by deltatime so it doesnt update it based on computer fps
+        transform.position += _direction * _speed * Time.deltaTime; 
 
         if (transform.position.y < _boundry.min)
         {

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
@@ -42,8 +41,11 @@ public class EnemyBehaviour : MonoBehaviour
 
     public IEnumerator DyingRoutine()
     {
-        // Existing death routine for enemies...
-        yield return new WaitForSeconds(0.2f);
-        gameObject.SetActive(false);
+        GetComponent<Renderer>().enabled = false; // Hide the enemy
+        GetComponent<Collider2D>().enabled = false; // Disable collisions
+
+        yield return new WaitForSeconds(0.2f); // Wait for a short duration before destruction
+
+        Destroy(gameObject); // Destroy the object at the end of the routine
     }
 }
