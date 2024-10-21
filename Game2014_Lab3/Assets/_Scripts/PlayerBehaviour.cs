@@ -18,6 +18,10 @@ public class PlayerBehaviour : MonoBehaviour
     GameController _gameController;
 
     bool _isMobilePlatform = true;
+
+    // Player health
+    public int health = 3;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,16 +33,14 @@ public class PlayerBehaviour : MonoBehaviour
             _isMobilePlatform = Application.platform == RuntimePlatform.Android ||
                                 Application.platform == RuntimePlatform.IPhonePlayer;
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(_isMobilePlatform)
+        if (_isMobilePlatform)
         {
             GetTouchInput();
-
         }
         else
         {
@@ -52,7 +54,6 @@ public class PlayerBehaviour : MonoBehaviour
     void Move()
     {
         transform.position = _destination;
-
     }
 
     void GetTraditionalInput()
@@ -68,7 +69,6 @@ public class PlayerBehaviour : MonoBehaviour
     {
         foreach (Touch touch in Input.touches)
         {
-
             _destination = _camera.ScreenToWorldPoint(touch.position);
             _destination = Vector2.Lerp(transform.position, _destination, _speed * Time.deltaTime);
         }
@@ -76,17 +76,17 @@ public class PlayerBehaviour : MonoBehaviour
 
     void CheckBoundaries()
     {
-        // for boundry
+        // for boundary
         if (transform.position.x > _horizontalBoundry.max)
         {
             transform.position = new Vector3(_horizontalBoundry.min, transform.position.y, 0);
-
         }
         else if (transform.position.x < _horizontalBoundry.min)
         {
             transform.position = new Vector3(_horizontalBoundry.max, transform.position.y, 0);
         }
-        //player passes the boundry, stop it on the edge 
+
+        // player passes the boundary, stop it on the edge 
         if (transform.position.y > _verticalBoundry.max)
         {
             transform.position = new Vector3(transform.position.x, _verticalBoundry.max, 0);
@@ -94,17 +94,28 @@ public class PlayerBehaviour : MonoBehaviour
         else if (transform.position.y < _verticalBoundry.min)
         {
             transform.position = new Vector3(transform.position.x, _verticalBoundry.min, 0);
+        }
+    }
 
+    public void TakeDamage()
+    {
+        // Reduce player health
+        health--;
+
+        // Check if the player has died
+        if (health <= 0)
+        {
+            Debug.Log("Player Died!");
+            // You can add code here to handle game over (e.g., restarting the game, showing Game Over screen, etc.)
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy"))
         {
             _gameController.ChangeScore(9);
-            //Destroy(collision.gameObject);
-            //collision.gameObject.SetActive (false);
+            // Destroy or disable the enemy
             StartCoroutine(collision.GetComponent<EnemyBehaviour>().DyingRoutine());
         }
     }

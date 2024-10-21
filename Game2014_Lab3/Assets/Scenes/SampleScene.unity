@@ -830,6 +830,53 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3072a5d43624f67448035dac0493ede2, type: 3}
+--- !u!1 &1147435929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1147435931}
+  - component: {fileID: 1147435930}
+  m_Layer: 0
+  m_Name: BulletManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1147435930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147435929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a509cd22d41b40c428aa036ff4f97b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxBullets: 10
+  playerBulletPrefab: {fileID: 3134422316657345937, guid: 005ce87ddf3a1584e881a217e1908aa0, type: 3}
+  enemyBulletPrefab: {fileID: 5336087308829237460, guid: 2cc8b49780b01d94a87acce3cd51c82a, type: 3}
+--- !u!4 &1147435931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147435929}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5597361, y: -0.5199549, z: 0.030812616}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1753614870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,3 +1220,4 @@ SceneRoots:
   - {fileID: 1829693510}
   - {fileID: 1961117161}
   - {fileID: 596024457}
+  - {fileID: 1147435931}
