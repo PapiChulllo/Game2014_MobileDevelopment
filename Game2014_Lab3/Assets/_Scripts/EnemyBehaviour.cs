@@ -5,67 +5,45 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour
 {
     [SerializeField]
-    Boundry _verticalSpeedRange;
+    private BulletManager bulletManager; // BulletManager reference for shooting
     [SerializeField]
-    Boundry _horizontalSpeedRange;
+    private float enemySpeed = 2f; // Speed at which the enemy moves
 
+    // Shooting parameters
+    private float shootCooldown = 2f; // Time between enemy shots
+    private float nextShotTime = 0f; // Time of the next shot
 
-    float _verticalSpeed;
-    float _horizontalSpeed;
-
-    [SerializeField]
-    Boundry _verticalBoundry;
-    [SerializeField]
-    Boundry _horizontalBoundry;
-
-    SpriteRenderer _spriteRenderer;
-
-    Color[] _colors = {Color.green, Color.cyan, Color.white, Color.magenta, Color.yellow};
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        Reset();
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector2(Mathf.PingPong(_horizontalSpeed * Time.time, _horizontalBoundry.max - _horizontalBoundry.min) + _horizontalBoundry.min,
- 
-                                  /* transform.position.x + _horizontalSpeed Time.deltaTime */
-                                  transform.position.y + _verticalSpeed *Time.deltaTime);
+        // Move the enemy downward
+        transform.Translate(Vector3.down * enemySpeed * Time.deltaTime);
 
-        if (transform.position.y < _verticalBoundry.min)
+        // Continuously shoot at intervals
+        if (Time.time > nextShotTime)
         {
-            Reset();
+            Shoot();
+            nextShotTime = Time.time + shootCooldown;
         }
 
-        //if (transform.position.x > _horizontalBoundry.max || transform.position.x < _horizontalBoundry.min)
-        //{
-        //    _horizontalSpeed = -_horizontalSpeed;
-        //}
+        // Destroy enemy if it goes off-screen
+        if (transform.position.y < -10f) // Adjust the boundary as needed for your game world
+        {
+            Destroy(gameObject); // Destroys the enemy when it leaves the screen
+        }
     }
+
+    private void Shoot()
+    {
+        // Get a bullet from BulletManager and set it at the enemy's position
+        GameObject bullet = bulletManager.GetBullet(false); // False indicates it's an enemy bullet
+        bullet.transform.position = transform.position;
+        bullet.SetActive(true);
+    }
+
     public IEnumerator DyingRoutine()
     {
-
-        _spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(.2f);
-        _spriteRenderer.enabled = false;
-        GetComponent<Collider2D>().enabled = false;
-    }
- 
-    private void Reset()
-    {
-
-        _spriteRenderer.color = _colors[Random.Range(0,_colors.Length)];
-        _spriteRenderer.enabled = true;
-        GetComponent<Collider2D>().enabled = true;
-        gameObject.SetActive(true);
-        transform.position = new Vector2(Random.Range(_horizontalBoundry.min, _horizontalBoundry.max), _verticalBoundry.max);
-        transform.localScale = new Vector3(1 + Random.Range(-.3f, .3f), 1 + Random.Range(-.3f, .3f), 1f);
-        _verticalSpeed = Random.Range(_verticalSpeedRange.min, _verticalSpeedRange.max);
-        _horizontalSpeed = Random.Range(_horizontalSpeedRange.min, _horizontalSpeedRange.max);
+        // Existing death routine for enemies...
+        yield return new WaitForSeconds(0.2f);
+        gameObject.SetActive(false);
     }
 }

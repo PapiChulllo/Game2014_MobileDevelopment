@@ -17,9 +17,9 @@ public class Bullet : MonoBehaviour
         transform.Translate((isPlayerBullet ? Vector3.up : Vector3.down) * speed * Time.deltaTime);
 
         // Destroy or deactivate the bullet if it moves off-screen
-        if (transform.position.y > 10 || transform.position.y < -10)
+        if (transform.position.y > 10 || transform.position.y < -10) // Adjust boundaries according to your game screen
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject); // Alternatively, you can set the bullet inactive with gameObject.SetActive(false);
         }
     }
 
@@ -27,13 +27,23 @@ public class Bullet : MonoBehaviour
     {
         if (isPlayerBullet && collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyBehaviour>().StartCoroutine(collision.GetComponent<EnemyBehaviour>().DyingRoutine());
-            gameObject.SetActive(false); // Deactivate bullet after hitting enemy
+            // Destroy the enemy plane
+            Destroy(collision.gameObject);
+            // Deactivate the bullet after collision
+            Destroy(gameObject);
+
+            // Update the score (make sure you have a reference to the GameController)
+            GameController gameController = FindObjectOfType<GameController>();
+            if (gameController != null)
+            {
+                gameController.ChangeScore(10); // Adjust score increment as needed
+            }
         }
         else if (!isPlayerBullet && collision.CompareTag("Player"))
         {
             collision.GetComponent<PlayerBehaviour>().TakeDamage();
-            gameObject.SetActive(false); // Deactivate bullet after hitting player
+            Destroy(gameObject); // Deactivate the bullet after hitting the player
         }
     }
+
 }

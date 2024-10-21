@@ -12,15 +12,20 @@ public class PlayerBehaviour : MonoBehaviour
     private Boundry _verticalBoundry;
     [SerializeField]
     bool _isTestMobile;
+    [SerializeField]
+    private BulletManager bulletManager;  // BulletManager reference for shooting
+
     Camera _camera;
     Vector2 _destination;
-
     GameController _gameController;
-
     bool _isMobilePlatform = true;
 
     // Player health
     public int health = 3;
+
+    // Shooting parameters
+    private float shootCooldown = 0.2f; // Time between shots
+    private float nextShotTime = 0f; // Time of the next shot
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +54,13 @@ public class PlayerBehaviour : MonoBehaviour
 
         Move();
         CheckBoundaries();
+
+        // Continuously shoot
+        if (Time.time > nextShotTime)
+        {
+            Shoot();
+            nextShotTime = Time.time + shootCooldown;
+        }
     }
 
     void Move()
@@ -58,10 +70,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     void GetTraditionalInput()
     {
-        // calculate movement amount
+        // Calculate movement amount
         float axisX = Input.GetAxisRaw("Horizontal") * _speed * Time.deltaTime;
         float axisY = Input.GetAxisRaw("Vertical") * _speed * Time.deltaTime;
-        //apply movement amount to transform
+        // Apply movement amount to transform
         _destination = new Vector3(axisX + transform.position.x, axisY + transform.position.y, 0);
     }
 
@@ -76,7 +88,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     void CheckBoundaries()
     {
-        // for boundary
+        // Horizontal boundaries
         if (transform.position.x > _horizontalBoundry.max)
         {
             transform.position = new Vector3(_horizontalBoundry.min, transform.position.y, 0);
@@ -86,7 +98,7 @@ public class PlayerBehaviour : MonoBehaviour
             transform.position = new Vector3(_horizontalBoundry.max, transform.position.y, 0);
         }
 
-        // player passes the boundary, stop it on the edge 
+        // Vertical boundaries
         if (transform.position.y > _verticalBoundry.max)
         {
             transform.position = new Vector3(transform.position.x, _verticalBoundry.max, 0);
@@ -95,6 +107,14 @@ public class PlayerBehaviour : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, _verticalBoundry.min, 0);
         }
+    }
+
+    private void Shoot()
+    {
+        // Get a bullet from BulletManager and set it at the player's position
+        GameObject bullet = bulletManager.GetBullet(true); // True indicates it's a player bullet
+        bullet.transform.position = transform.position;
+        bullet.SetActive(true);
     }
 
     public void TakeDamage()
