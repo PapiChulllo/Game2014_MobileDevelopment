@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ public class BulletManager : MonoBehaviour
     [SerializeField]
     private GameObject playerBulletPrefab;
     [SerializeField]
-    private GameObject enemyBulletPrefab;
+    private GameObject enemyBulletPrefab; 
 
     private List<GameObject> bullets;
 
@@ -19,6 +18,12 @@ public class BulletManager : MonoBehaviour
     public GameObject GetBullet(bool isPlayerBullet)
     {
         GameObject bulletPrefab = isPlayerBullet ? playerBulletPrefab : enemyBulletPrefab;
+
+        if (bulletPrefab == null)
+        {
+            Debug.LogError("Bullet prefab not assigned!");
+            return null;
+        }
 
         GameObject bullet = Instantiate(bulletPrefab);
         bullets.Add(bullet);

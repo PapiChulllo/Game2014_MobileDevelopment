@@ -11,9 +11,15 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private Vector2 spawnRangeX = new Vector2(-5f, 5f); // X-axis range for random spawn positions
 
+    private bool isSpawning = false; // Ensure spawning only happens once
+
     void Start()
     {
-        StartCoroutine(SpawnEnemies());
+        if (!isSpawning)
+        {
+            StartCoroutine(SpawnEnemies());
+            isSpawning = true; // Prevent double initialization
+        }
     }
 
     IEnumerator SpawnEnemies()

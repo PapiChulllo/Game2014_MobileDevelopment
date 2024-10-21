@@ -22,11 +22,16 @@ public class GameController : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Restart the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
     }
 
     public void GameOver()
     {
         Debug.Log("Game Over!");
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("SampleScene"); 
     }
 }

@@ -1,10 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
     [SerializeField]
-    private BulletManager bulletManager; // BulletManager reference for shooting
+    private BulletManager bulletManager; // Reference to BulletManager for shooting
     [SerializeField]
     private float enemySpeed = 2f; // Speed at which the enemy moves
 
@@ -17,7 +18,7 @@ public class EnemyBehaviour : MonoBehaviour
         // Move the enemy downward
         transform.Translate(Vector3.down * enemySpeed * Time.deltaTime);
 
-        // Continuously shoot at intervals
+        // Shooting logic
         if (Time.time > nextShotTime)
         {
             Shoot();
@@ -25,9 +26,9 @@ public class EnemyBehaviour : MonoBehaviour
         }
 
         // Destroy enemy if it goes off-screen
-        if (transform.position.y < -10f) // Adjust the boundary as needed for your game world
+        if (transform.position.y < -10f) // Adjust as needed for your game world
         {
-            Destroy(gameObject); // Destroys the enemy when it leaves the screen
+            Destroy(gameObject);
         }
     }
 
@@ -41,11 +42,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     public IEnumerator DyingRoutine()
     {
-        GetComponent<Renderer>().enabled = false; // Hide the enemy
-        GetComponent<Collider2D>().enabled = false; // Disable collisions
-
-        yield return new WaitForSeconds(0.2f); // Wait for a short duration before destruction
-
-        Destroy(gameObject); // Destroy the object at the end of the routine
+        // Optional: Hide the enemy or play death animation
+        yield return new WaitForSeconds(0.2f); // Wait before destroying
+        Destroy(gameObject); // Destroy the enemy
     }
 }
