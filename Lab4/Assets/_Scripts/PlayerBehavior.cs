@@ -27,12 +27,18 @@ public class PlayerBehavior : MonoBehaviour
     LayerMask _groundLayerMask;
 
     Joystick _leftJoystick;
+    [SerializeField]
+    [Range(0f, 1f)]
+    float _leftJoystickVerticalTreshold;
 
     // Start is called before the first frame update
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _leftJoystick = GameObject.Find("LeftJoystick").GetComponent<Joystick>();
+        if (GameObject.Find("OnScreenControllers"))
+        {
+            _leftJoystick = GameObject.Find("LeftJoystick").GetComponent<Joystick>();
+        }
     }
 
     void FixedUpdate()
@@ -49,32 +55,35 @@ public class PlayerBehavior : MonoBehaviour
         if (_leftJoystick)
         {
             xInput = _leftJoystick.Horizontal;
-            Debug.Log(_leftJoystick.Horizontal + " - " + _leftJoystick.Vertical);
+            // Debug.Log(_leftJoystick. Horizontal +
+            // + _leftJoystick.Vertical);
         }
-    
-
         if (xInput != 0.0f)
         {
             Vector2 force = Vector2.right * xInput * _horizontalForce;
-            if (_isGrounded)
+            if (!_isGrounded)
             {
                 force *= _airFactor;
             }
             _rigidbody.AddForce(force);
+            GetComponent<SpriteRenderer>().flipX = (force.x < 0.0f);
             if (Mathf.Abs(_rigidbody.velocity.x) > _horizontalSpeedLimit)
             {
                 float updatedXvalue = Mathf.Clamp(_rigidbody.velocity.x, -_horizontalSpeedLimit, _horizontalSpeedLimit);
                 _rigidbody.velocity = new Vector2(updatedXvalue, _rigidbody.velocity.y);
-                //_rigidbody.velocity = new Vector2(Vector2.ClampMagnitude(_rigidbody.velocity, _horizontalSpeedLimit).x, _rigidbody.velocity.y);
+                //_rigidbody.velocity = new Vector2(Vector2.ClampMagnitude(_rigidbody. velocity, _horizontalSpeedLimit).x, _rigidbody.velocity.y);
             }
-
         }
     }
 
     void Jump()
     {
         var jumpPressed = Input.GetAxisRaw("Jump");
-        if (_isGrounded && jumpPressed != 0.0f)
+        if (_leftJoystick)
+        {
+            jumpPressed = _leftJoystick.Vertical;
+        }
+        if (_isGrounded && jumpPressed > _leftJoystickVerticalTreshold)
         {
             _rigidbody.AddForce(Vector2.up * _verticalForce);
         }
