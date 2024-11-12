@@ -26,10 +26,13 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField]
     LayerMask _groundLayerMask;
 
+    Joystick _leftJoystick;
+
     // Start is called before the first frame update
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _leftJoystick = GameObject.Find("LeftJoystick").GetComponent<Joystick>();
     }
 
     void FixedUpdate()
@@ -43,6 +46,12 @@ public class PlayerBehavior : MonoBehaviour
     void Move()
     {
         float xInput = Input.GetAxisRaw("Horizontal");
+        if (_leftJoystick)
+        {
+            xInput = _leftJoystick.Horizontal;
+            Debug.Log(_leftJoystick.Horizontal + " - " + _leftJoystick.Vertical);
+        }
+    
 
         if (xInput != 0.0f)
         {
