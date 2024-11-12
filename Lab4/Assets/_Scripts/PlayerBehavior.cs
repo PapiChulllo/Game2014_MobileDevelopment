@@ -26,30 +26,61 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField]
     LayerMask _groundLayerMask;
 
+    Animator _animator;
     Joystick _leftJoystick;
     [SerializeField]
     [Range(0f, 1f)]
     float _leftJoystickVerticalTreshold;
+    [SerializeField]
+    float _deathlyFallSpeed = 5;
 
     // Start is called before the first frame update
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         if (GameObject.Find("OnScreenControllers"))
         {
             _leftJoystick = GameObject.Find("LeftJoystick").GetComponent<Joystick>();
         }
     }
 
+
     void FixedUpdate()
     {
         _isGrounded = Physics2D.OverlapCircle(_groundingPoint.position, _groundingRadius, _groundLayerMask);
-
         Move();
         Jump();
+        AnimatorStateControl();
     }
 
-    void Move()
+    void AnimatorStateControl()
+    {
+        if (_isGrounded)
+        {
+            if (Mathf.Abs(_rigidbody.velocity.x) > 0.2f)
+            {
+                _animator.SetInteger("State", (int)AnimationStates.WALK);
+            }
+            else
+            {
+                _animator.SetInteger("State", (int)AnimationStates.IDLE);
+            }
+        }
+        else
+        {
+            if (Mathf.Abs(_rigidbody.velocity.y) > _deathlyFallSpeed)
+            {
+                _animator.SetInteger("State", (int)AnimationStates.FALL);
+            }
+            else
+            {
+                _animator.SetInteger("State", (int)AnimationStates.JUMP);
+            }
+        }
+    }
+
+void Move()
     {
         float xInput = Input.GetAxisRaw("Horizontal");
         if (_leftJoystick)
@@ -63,7 +94,7 @@ public class PlayerBehavior : MonoBehaviour
             Vector2 force = Vector2.right * xInput * _horizontalForce;
             if (!_isGrounded)
             {
-                force *= _airFactor;
+                force = new Vector2(force.x * _airFactor, force.y);
             }
             _rigidbody.AddForce(force);
             GetComponent<SpriteRenderer>().flipX = (force.x < 0.0f);
@@ -85,7 +116,7 @@ public class PlayerBehavior : MonoBehaviour
         }
         if (_isGrounded && jumpPressed > _leftJoystickVerticalTreshold)
         {
-            _rigidbody.AddForce(Vector2.up * _verticalForce);
+            _rigidbody.AddForce(Vector2.up * _verticalForce, ForceMode2D.Impulse);
         }
     }
 
